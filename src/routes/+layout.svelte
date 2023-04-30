@@ -1,10 +1,20 @@
 <script>
-  import "../app.css";
+	import '../app.css';
+	import { Navigation } from '../components';
+
+	const Container = `flex`;
+	const ContentContainer = 'flex flex-col p-4';
 </script>
 
-<nav>
-  <a href="/">Home</a>
-  <a href="/about">About</a>
-  <a href="/settings">Settings</a>
-</nav>
-<slot />
+<div class={Container}>
+	<Navigation />
+	<div class={ContentContainer}>
+		<slot />
+	</div>
+</div>
+
+<style>
+	div {
+		display: flex;
+	}
+</style>

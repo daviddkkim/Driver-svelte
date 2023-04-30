@@ -13,13 +13,13 @@ h8,
 h9 {
     margin: 0;
     padding: 0;
-    color: theme('colors.gray.900');
+    color: theme('colors.zinc.900');
     font-weight: 500;
 }
 
 p,
 div {
-    color: theme('colors.gray.700');
+    color: theme('colors.zinc.700');
 }
 
 a {
