@@ -3,7 +3,7 @@
 	import { Navigation } from '../components';
 
 	const Container = `flex`;
-	const ContentContainer = 'flex flex-col p-4';
+	const ContentContainer = 'flex flex-col p-4 w-full';
 </script>
 
 <div class={Container}>
