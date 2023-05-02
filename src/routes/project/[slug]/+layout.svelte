@@ -1,37 +1,46 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { DriverLogo } from '../../../components';
 
-	const TopNav = `flex w-full  px-4 py-2 font-medium`;
-	const TabNav = `flex w-full border-b px-2 py-0 gap-4`;
-	const TabItem = `flex px-2 py-3 rounded-sm text-stone-700 hover:bg-stone-100`;
-	const ActiveTabItem = `flex px-2 py-3 rounded-sm text-stone-700 hover:bg-stone-100 border-b-2 border-orange-300`;
+	const TopNav = `flex w-full  px-6 py-6 font-medium text-stone-900 border-b border-stone-200`;
+	const TabNav = `flex w-full flex-col border-b px-4 py-2 gap-2 w-fit border-r border-stone-200`;
+	const TabItem = `flex px-2 py-1 rounded-sm text-stone-500 hover:text-stone-600 hover:bg-stone-50 `;
+	const ActiveTabItem = `flex px-2 py-1 rounded-sm text-stone-900 `;
 	let activeTabValue = $page.route.id?.substring($page.route.id.lastIndexOf('/') + 1);
 </script>
 
-<div class={TopNav}>{$page.params.slug}</div>
-<div class={TabNav}>
-	<a
-		class={activeTabValue === 'database' ? ActiveTabItem : TabItem}
-		href={`/project/${$page.params.slug}/database`}
-		on:click={() => {
-			activeTabValue = 'database';
-		}}
-	>
-		Database
+<div class={TopNav}>
+	<a href={'/'} class={'font-[400] text-stone-500 hover:text-stone-600'}>
+		<DriverLogo width={24} height={24} />
 	</a>
-	<a
-		class={activeTabValue === 'views' ? ActiveTabItem : TabItem}
-		href={`/project/${$page.params.slug}/views`}
-		on:click={() => {
-			activeTabValue = 'views';
-		}}>Views</a
-	>
-	<a
-		class={activeTabValue === 'settings' ? ActiveTabItem : TabItem}
-		href={`/project/${$page.params.slug}/settings`}
-		on:click={() => {
-			activeTabValue = 'settings';
-		}}>Settings</a
-	>
+	<span class={'text-stone-300 px-3'}> / </span>
+	{$page.params.slug}
 </div>
-<slot />
+<div class={'flex w-full h-full'}>
+	<div class={TabNav}>
+		<a
+			class={activeTabValue === 'data' ? ActiveTabItem : TabItem}
+			href={`/project/${$page.params.slug}/data`}
+			on:click={() => {
+				activeTabValue = 'data';
+			}}
+		>
+			Data
+		</a>
+		<a
+			class={activeTabValue === 'views' ? ActiveTabItem : TabItem}
+			href={`/project/${$page.params.slug}/views`}
+			on:click={() => {
+				activeTabValue = 'views';
+			}}>Views</a
+		>
+		<a
+			class={activeTabValue === 'settings' ? ActiveTabItem : TabItem}
+			href={`/project/${$page.params.slug}/settings`}
+			on:click={() => {
+				activeTabValue = 'settings';
+			}}>Settings</a
+		>
+	</div>
+	<slot />
+</div>
