@@ -37,3 +37,8 @@ You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
 # Driver
+
+[] add support for postgres (testing through supabase)
+[] add support for convex (testing through convex)
+[] add support for creating nosql database (start with convex , seems easier) 
+[] add support for creating postgres database (supabase?)
