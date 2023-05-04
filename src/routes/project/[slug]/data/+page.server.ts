@@ -14,3 +14,15 @@ export async function load() {
         columns: columns
     };
 }
+
+export const actions = {
+    addColumn: async ({ request }) => {
+        const data = await request.formData();
+      /*   console.log(data)
+        const { rows: dataRows } = await client.query(`ALTER TABLE driver ADD COLUMN ${data.get('column_name')} ${data.get('data_type')}(${data.get('character_maximum_length')})`); */
+        return {
+            data
+        }
+        // TODO log the user in
+    }
+};

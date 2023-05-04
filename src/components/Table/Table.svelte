@@ -4,7 +4,7 @@
 	const HeaderCell = `bg-stone-50 font-medium text-sm px-4 py-1  border-r text-stone-700 hover:bg-stone-100 min-w-[150px] last:rounded-r-sm first:rounded-l-sm`;
 	const TableRow = ` flex`;
 	const TableCell = `bg-white px-4 py-1 text-sm  border-r border-b text-stone-700 hover:bg-stone-100 min-w-[150px] last:rounded-r-smfirst:rounded-l-sm`;
-
+	export let onClick = () => {};
 	export let data = [
 		{ firstname: 'John', lastname: 'Doe' },
 		{ firstname: 'Jane', lastname: 'Doe' }
@@ -29,7 +29,8 @@
 			{#each column as col}
 				<div class={HeaderCell}>{col.header}</div>
 			{/each}
-			<button> +</button>
+			<button on:click={onClick}>+</button>
+            <div id={"addColumnPopover"}/>
 		</div>
 	</div>
 	<div>
