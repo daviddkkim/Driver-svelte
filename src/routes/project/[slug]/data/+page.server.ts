@@ -31,5 +31,21 @@ export const actions = {
             console.log(e)
         }
         // TODO log the user in
+    },
+    deleteColumn: async ({ request }) => {
+        console.log('here')
+        const data = await request.formData();
+        console.log(data.get('column_name'))
+        console.log(data.get('column_type'))
+        try {
+            const { rows: dataRows } = await client.query(`ALTER TABLE driver DROP COLUMN ${data.get('column_name')}`);
+            console.log(dataRows)
+            return {
+                dataRows
+            }
+        }
+        catch (e) {
+            console.log(e)
+        } 
     }
 };

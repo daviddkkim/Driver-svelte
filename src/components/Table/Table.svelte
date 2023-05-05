@@ -1,10 +1,15 @@
 <script lang="ts">
-	const TableContainer = `bg-white border border-b-0 border-t-0 border-l-0 rounded-sm text-stone-700 w-full h-fit`;
+	import MoreHorizontal from '../Icons/MoreHorizontal.svelte';
+	import { SettingIcon } from '../index';
+	const TableContainer = `bg-white border border-b-0 border-t-0 border-l-0 rounded-md text-stone-700 w-full h-fit`;
 	const TableHeader = `flex border-b bg-stone-50`;
-	const HeaderCell = `bg-stone-50 font-medium text-sm px-4 py-1  border-r text-stone-700 hover:bg-stone-100 min-w-[150px] last:rounded-r-sm first:rounded-l-sm`;
+	const HeaderCell = `bg-stone-50 font-medium text-sm px-4 py-1  border-r text-stone-700 hover:bg-stone-100 w-[180px] last:rounded-r-sm first:rounded-l-sm flex justify-between items-center`;
 	const TableRow = ` flex`;
-	const TableCell = `bg-white px-4 py-1 text-sm  border-r border-b text-stone-700 hover:bg-stone-100 min-w-[150px] last:rounded-r-smfirst:rounded-l-sm`;
-	export let onClick = () => {};
+	const TableCell = `bg-white px-4 py-1 text-sm  border-r border-b text-stone-700 hover:bg-stone-100  overflow-hidden w-[180px] whitespace-nowrap last:rounded-r-smfirst:rounded-l-sm`;
+
+	export let onAddClick = () => {};
+	export let onHeaderClick = (colName: string) => {};
+
 	export let data = [
 		{ firstname: 'John', lastname: 'Doe' },
 		{ firstname: 'Jane', lastname: 'Doe' }
@@ -27,10 +32,13 @@
 	<div>
 		<div class={TableHeader}>
 			{#each column as col}
-				<div class={HeaderCell}>{col.header}</div>
+				<div class={HeaderCell}>
+					{col.header}
+					<button on:click={() => onHeaderClick(col.header)}> <MoreHorizontal width={12} height={12} /> </button>
+				</div>
 			{/each}
-			<button on:click={onClick}>+</button>
-            <div id={"addColumnPopover"}/>
+			<button on:click={onAddClick}>+</button>
+			<div id={'addColumnPopover'} />
 		</div>
 	</div>
 	<div>

@@ -4,8 +4,8 @@
 
 	const TopNav = `flex w-full  px-6 py-6 font-medium text-stone-900 border-b border-stone-200`;
 	const TabNav = `flex flex-col border-b px-4 py-2 gap-2 w-fit border-r border-stone-200`;
-	const TabItem = `flex px-2 py-1 rounded-sm text-stone-500 hover:text-stone-600 hover:bg-stone-50 `;
-	const ActiveTabItem = `flex px-2 py-1 rounded-sm text-stone-900 `;
+	const TabItem = `flex px-2 py-1 rounded-md text-stone-500 hover:text-stone-600 hover:bg-stone-50 `;
+	const ActiveTabItem = `flex px-2 py-1 rounded-md text-stone-900 `;
 	let activeTabValue = $page.route.id?.substring($page.route.id.lastIndexOf('/') + 1);
 </script>
 
