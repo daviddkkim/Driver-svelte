@@ -1,13 +1,14 @@
-/** Dispatch event on click outside of node */
-//TODO: figure out the type
+export function clickOutside(node: HTMLElement, ignore?: string) {
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function clickOutside(node: any) {
-    const handleClick = (event: MouseEvent) => {
-        if (node && !node.contains(event.target) && !event.defaultPrevented) {
+    const handleClick = (event: Event) => {
+        const target = event.target as HTMLElement;
+        if (!event.target || ignore && target.closest(ignore)) {
+            return;
+        }
+        if (node && !node.contains(target) && !event.defaultPrevented) {
             node.dispatchEvent(
-                new CustomEvent('click_outside', node)
-            )
+                new CustomEvent('click_outside')
+            );
         }
     }
 
@@ -17,5 +18,5 @@ export function clickOutside(node: any) {
         destroy() {
             document.removeEventListener('click', handleClick, true);
         }
-    }
-}
+    };
+};

@@ -3,6 +3,7 @@ import DriverLogo from './Icons/DriverLogo.svelte';
 import Search from './Icons/Search.svelte';
 import Setting from './Icons/Settings.svelte';
 import MoreHorizontal from './Icons/MoreHorizontal.svelte'
+import Plus from './Icons/Plus.svelte'
 import { Table } from './Table';
 import { Popover } from './Popover';
 export {
@@ -12,5 +13,6 @@ export {
     Popover,
     Setting as SettingIcon,
     Search as SearchIcon,
-    MoreHorizontal as MoreHorizontalIcon
+    MoreHorizontal as MoreHorizontalIcon,
+    Plus as PlusIcon
 }
