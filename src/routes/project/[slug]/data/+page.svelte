@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { Table } from '../../../../components';
+	import { Table, Popover} from '../../../../components';
 	import { enhance } from '$app/forms';
 	export let data;
 	export let form;
 	let colType = 'text';
-	let openAddCol = true;
+	let openAddCol = false;
 	let openDeleteCol = false;
 	let selectedCol = '';
 	const columns = data.columns.map((col) => {
@@ -69,9 +69,7 @@
 					</div>
 					<div class={'w-full p-3 border-t bg-stone-50 flex flex-col'}>
 						{#if form?.error}
-							<p
-								class={'text-red-600 py-2 px-3 mb-2 border border-red-200 bg-red-50 rounded-md'}
-							>
+							<p class={'text-red-600 py-2 px-3 mb-2 border border-red-200 bg-red-50 rounded-md'}>
 								{form.error}
 							</p>
 						{/if}

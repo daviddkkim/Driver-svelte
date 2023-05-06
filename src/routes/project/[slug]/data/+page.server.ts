@@ -1,6 +1,5 @@
 import { client } from "../../../../$lib/server/db/postgres";
 import { fail } from '@sveltejs/kit';
-import { error } from '@sveltejs/kit';
 
 export async function load() {
 
