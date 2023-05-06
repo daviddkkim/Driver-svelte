@@ -1,4 +1,6 @@
 import { client } from "../../../../$lib/server/db/postgres";
+import { fail } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 
 export async function load() {
 
@@ -16,36 +18,71 @@ export async function load() {
 
 export const actions = {
     addColumn: async ({ request }) => {
-        console.log('here')
         const data = await request.formData();
-        console.log(data.get('column_name'))
-        console.log(data.get('column_type'))
+
+        //validation
+        const column_name = data.get('column_name') as string | undefined;
+        const column_type = data.get('column_type') as string | undefined;
+        if (!column_name) {
+            return fail(400, { error: 'column name cannot be empty' });
+        }
+        if (column_name.length < 1) {
+            return fail(400, { error: 'column name cannot be empty' });
+        }
+        if (column_name.length > 64) {
+            return fail(400, { error: 'column name cannot be longer than 64 characters' });
+        }
+        if (column_name.match(/[^a-zA-Z0-9_]/)) {
+            return fail(400, { error: 'column name can only contain letters, numbers and underscores' });
+        }
+        if (column_name.match(/\s/)) {
+            return fail(400, { error: 'column name cannot contain spaces' });
+        }
+
+        if (!column_type) {
+            throw fail(400, { error: 'column type cannot be empty' });
+        }
+        //TODO more strict validations here.
+
         try {
-            const { rows: dataRows } = await client.query(`ALTER TABLE driver ADD COLUMN ${data.get('column_name')} ${data.get('column_type')}`);
-            console.log(dataRows)
+            const { rows: dataRows } = await client.query(`ALTER TABLE driver ADD COLUMN ${column_name} ${column_type}`);
             return {
                 dataRows
             }
         }
-        catch (e) {
-            console.log(e)
+        catch (error) {
+            let message
+            if (error instanceof Error) message = error.message
+            else message = String(error)
+
+            return fail(400, {
+                error: message
+            });
         }
         // TODO log the user in
     },
     deleteColumn: async ({ request }) => {
-        console.log('here')
         const data = await request.formData();
-        console.log(data.get('column_name'))
-        console.log(data.get('column_type'))
+        const column_name = data.get('column_name') as string | undefined;
+
+        if (!column_name) {
+            return fail(400, { error: 'column name cannot be empty' });
+        }
         try {
-            const { rows: dataRows } = await client.query(`ALTER TABLE driver DROP COLUMN ${data.get('column_name')}`);
+            const { rows: dataRows } = await client.query(`ALTER TABLE driver DROP COLUMN ${column_name}`);
             console.log(dataRows)
             return {
                 dataRows
             }
         }
-        catch (e) {
-            console.log(e)
-        } 
+        catch (error) {
+            let message
+            if (error instanceof Error) message = error.message
+            else message = String(error)
+
+            return fail(400, {
+                error: message
+            });
+        }
     }
 };
