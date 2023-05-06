@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { Table, Popover} from '../../../../components';
+	import { Table, Popover } from '../../../../components';
 	import { enhance } from '$app/forms';
+	import { columnTypes, type ColumnTypes } from '../../../../lib/types';
 	export let data;
 	export let form;
-	let colType = 'text';
+	let colType: ColumnTypes = 'text';
 	let openAddCol = false;
 	let openDeleteCol = false;
 	let selectedCol = '';
@@ -57,13 +58,16 @@
 							Column type
 							<select
 								class={`border rounded-md p-2 appearance-none text-sm`}
-								value={colType}
+								bind:value={colType}
 								id="columnType"
 								name="column_type"
 								required
 							>
-								<option value="text">text</option>
-								<option value="checkbox">checkbox</option>
+								<!-- <option value="text">text</option>
+								<option value="checkbox">checkbox</option> -->
+								{#each columnTypes as type}
+									<option value={type}>{type}</option>
+								{/each}
 							</select>
 						</label>
 					</div>

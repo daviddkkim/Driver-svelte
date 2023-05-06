@@ -1,5 +1,6 @@
 import { client } from "../../../../$lib/server/db/postgres";
 import { fail } from '@sveltejs/kit';
+import type { ColumnTypes } from "../../../../lib/types";
 
 export async function load() {
 
@@ -21,7 +22,7 @@ export const actions = {
 
         //validation
         const column_name = data.get('column_name') as string | undefined;
-        const column_type = data.get('column_type') as string | undefined;
+        const column_type = data.get('column_type') as ColumnTypes | undefined;
         if (!column_name) {
             return fail(400, { error: 'column name cannot be empty' });
         }
@@ -69,7 +70,6 @@ export const actions = {
         }
         try {
             const { rows: dataRows } = await client.query(`ALTER TABLE driver DROP COLUMN ${column_name}`);
-            console.log(dataRows)
             return {
                 dataRows
             }

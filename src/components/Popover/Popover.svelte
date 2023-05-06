@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { clickOutside } from '../../utils/clickoutside';
+	import { clickOutside } from '../../lib/utils/clickoutside';
 	export let open = false;
 
 	//TODO: maybe better to have 1 keyboard listener that pops all open floating stuff
