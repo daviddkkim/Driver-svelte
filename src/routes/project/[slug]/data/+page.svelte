@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { Table, Popover } from '../../../../components';
-	import { enhance } from '$app/forms';
-	import { columnTypes, type ColumnTypes } from '../../../../lib/types';
+	import { Table } from '../../../../components';
+	import { applyAction, enhance } from '$app/forms';
+	import { columnTypes } from '../../../../lib/types';
 	export let data;
 	export let form;
-	let colType: ColumnTypes = 'text';
+	let colType = 'text';
 	let openAddCol = false;
 	let openDeleteCol = false;
 	let selectedCol = '';
+
 	const columns = data.columns.map((col) => {
 		return {
 			header: col.column_name
@@ -42,7 +43,22 @@
 			<div
 				class={'z-20 absolute bg-white border inset-2/4 -translate-y-2/4 -translate-x-2/4 max-w-[400px] w-full h-fit rounded-md shadow-lg'}
 			>
-				<form method="POST" action="?/addColumn" use:enhance>
+				<form
+					method="POST"
+					action="?/addColumn"
+					use:enhance={() => {
+						return async ({ result, update }) => {
+							await update();
+							console.log(result);
+							if (result.type === 'success') {
+								await applyAction(result);
+								//data is obviosuly updated but ui doesnt re render
+								console.log(data)
+								openAddCol = false;
+							}
+						};
+					}}
+				>
 					<div class={`p-3`}>
 						<label class={'flex flex-col text-sm mb-3'} for="columnName">
 							Column name
@@ -58,13 +74,11 @@
 							Column type
 							<select
 								class={`border rounded-md p-2 appearance-none text-sm`}
-								bind:value={colType}
+								value={colType}
 								id="columnType"
 								name="column_type"
 								required
 							>
-								<!-- <option value="text">text</option>
-								<option value="checkbox">checkbox</option> -->
 								{#each columnTypes as type}
 									<option value={type}>{type}</option>
 								{/each}
@@ -89,9 +103,7 @@
 							>
 								cancel
 							</button>
-							<button class={'bg-orange-600 text-white text-sm px-2 py-1 rounded-md'} type="submit">
-								Save</button
-							>
+							<button class={'bg-orange-600 text-white text-sm px-2 py-1 rounded-md'}> Save</button>
 						</div>
 					</div>
 				</form>

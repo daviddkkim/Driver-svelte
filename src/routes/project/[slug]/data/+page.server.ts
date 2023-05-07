@@ -10,6 +10,8 @@ export async function load() {
     FROM information_schema.columns
     WHERE table_name = 'driver';`)
 
+    console.log('load action')
+    console.log(dataRows)
     return {
         data: dataRows,
         columns: columns
@@ -19,10 +21,11 @@ export async function load() {
 export const actions = {
     addColumn: async ({ request }) => {
         const data = await request.formData();
-
+        console.log(data)
         //validation
         const column_name = data.get('column_name') as string | undefined;
         const column_type = data.get('column_type') as ColumnTypes | undefined;
+
         if (!column_name) {
             return fail(400, { error: 'column name cannot be empty' });
         }
@@ -46,12 +49,16 @@ export const actions = {
 
         try {
             const { rows: dataRows } = await client.query(`ALTER TABLE driver ADD COLUMN ${column_name} ${column_type}`);
+            console.log('datarows')
+            console.log(dataRows)
             return {
                 dataRows
             }
         }
         catch (error) {
             let message
+            console.log('error')
+            console.log(message)
             if (error instanceof Error) message = error.message
             else message = String(error)
 
