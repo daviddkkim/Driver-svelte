@@ -6,8 +6,10 @@ import MoreHorizontal from './Icons/MoreHorizontal.svelte'
 import Plus from './Icons/Plus.svelte'
 import { Table } from './Table';
 import { Popover } from './Popover';
+import { Button } from './Button';
 export {
     Navigation,
+    Button,
     DriverLogo,
     Table,
     Popover,

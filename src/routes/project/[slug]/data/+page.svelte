@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Table } from '../../../../components';
+	import { Button, PlusIcon, Table } from '../../../../components';
 	import { applyAction, enhance } from '$app/forms';
 	import { columnTypes } from '../../../../lib/types';
 	export let data;
@@ -8,6 +8,7 @@
 	let openAddCol = false;
 	let openDeleteCol = false;
 	let selectedCol = '';
+	let selected: string[] = [];
 
 	$: columns = data.columns.map((col) => {
 		return {
@@ -31,16 +32,47 @@
 </script>
 
 <div class={'flex flex-col w-full'}>
+	<div class={'flex items-center px-3 h-[42px] bg-stone-100 border-b'}>
+		{#if selected.length > 0}
+			<form
+				method="POST"
+				action="?/deleteRows"
+				use:enhance={({ data }) => {
+					//can I do this without data.append? so i dont need javascript?
+					data.append('rows', JSON.stringify(selected));
+					return async ({ result, update }) => {
+						//TODO: I don't actually know the diff between update and applyActions.
+						await update();
+						if (result.type === 'success') {
+							await applyAction(result);
+						}
+					};
+				}}
+			>
+				<Button size={'small'} type={'submit'}>Delete</Button>
+			</form>
+		{/if}
+	</div>
 	<!-- 	this makes the data update on page load-->
 	{#key data}
 		<Table
 			data={rowData}
 			column={columns}
-			onAddClick={() => {
+			bind:selected
+			onAddColClick={() => {
 				openAddCol = !openAddCol;
 			}}
 			{onHeaderClick}
-		/>
+		>
+			<form slot="addRowForm" method="POST" action="?/addRow" use:enhance>
+				<button class={`p-3`}><PlusIcon height={14} width={14} /></button>
+				{#if form?.error}
+					<p class={'text-red-600 py-2 px-3 m-2 border border-red-200 bg-red-50 rounded-md'}>
+						{form.error}
+					</p>
+				{/if}
+			</form>
+		</Table>
 	{/key}
 	{#if openAddCol}
 		<!-- Turn into re-usable modal. Also this should probably be a popover for better ux -->
@@ -73,7 +105,7 @@
 								required
 							/>
 						</label>
-						<label class={'flex flex-col text-sm'} for="columnType">
+						<label class={'flex flex-col text-sm mb-3'} for="columnType">
 							Column type
 							<select
 								class={`border rounded-md p-2 appearance-none text-sm`}
@@ -87,6 +119,16 @@
 								{/each}
 							</select>
 						</label>
+						<label class={'flex flex-col text-sm mb-3'} for="columnDefault">
+							Column default
+							<input
+								class={'border rounded-md p-2 text-sm'}
+								type="text"
+								id="columnDefault"
+								name="column_default"
+								required
+							/>
+						</label>
 					</div>
 					<div class={'w-full p-3 border-t bg-stone-50 flex flex-col'}>
 						{#if form?.error}
@@ -98,15 +140,15 @@
 							<label class={'text-sm flex items-center mr-auto'}>
 								<input type="checkbox" class={'mr-1'} /> Create another column</label
 							>
-							<button
+							<Button
 								on:click={() => {
 									openAddCol = false;
 								}}
-								class={'mr-2'}
+								style={'mr-2'}
 							>
 								cancel
-							</button>
-							<button class={'bg-orange-600 text-white text-sm px-2 py-1 rounded-md'}> Save</button>
+							</Button>
+							<Button color={'primary'} type={'submit'}>Save</Button>
 						</div>
 					</div>
 				</form>
@@ -134,20 +176,18 @@
 						</label>
 					</div>
 					<div class={'w-full p-3 border-t bg-stone-50 flex justify-end'}>
-						<button
+						<Button
 							on:click={() => {
 								openDeleteCol = false;
 							}}
-							class={'mr-auto'}
+							style={'mr-auto'}
 						>
 							cancel
-						</button>
+						</Button>
 						<span class={'text-sm flex items-center mr-1 text-stone-500'}>
 							this action cannot be undone</span
 						>
-						<button class={'bg-red-600 text-white text-sm px-2 py-1 rounded-md'} type="submit">
-							Delete</button
-						>
+						<Button color="danger" type={'submit'}>Delete</Button>
 					</div>
 				</form>
 			</div>
