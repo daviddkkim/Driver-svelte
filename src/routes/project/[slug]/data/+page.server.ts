@@ -66,7 +66,6 @@ export const actions = {
                 error: message
             });
         }
-        // TODO log the user in
     },
     deleteColumn: async ({ request }) => {
         const data = await request.formData();
