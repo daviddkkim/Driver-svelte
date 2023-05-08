@@ -9,11 +9,13 @@
 	let openDeleteCol = false;
 	let selectedCol = '';
 
-	const columns = data.columns.map((col) => {
+	$: columns = data.columns.map((col) => {
 		return {
 			header: col.column_name
 		};
 	});
+
+	$: rowData = data.data;
 
 	const onHeaderClick = (colName: string) => {
 		openDeleteCol = !openDeleteCol;
@@ -29,14 +31,17 @@
 </script>
 
 <div class={'flex flex-col w-full'}>
-	<Table
-		data={data.data}
-		column={columns}
-		onAddClick={() => {
-			openAddCol = !openAddCol;
-		}}
-		{onHeaderClick}
-	/>
+	<!-- 	this makes the data update on page load-->
+	{#key data}
+		<Table
+			data={rowData}
+			column={columns}
+			onAddClick={() => {
+				openAddCol = !openAddCol;
+			}}
+			{onHeaderClick}
+		/>
+	{/key}
 	{#if openAddCol}
 		<!-- Turn into re-usable modal. Also this should probably be a popover for better ux -->
 		<div class={'w-full h-full fixed items-center inset-0 bg-stone-900/25'}>
@@ -52,8 +57,6 @@
 							console.log(result);
 							if (result.type === 'success') {
 								await applyAction(result);
-								//data is obviosuly updated but ui doesnt re render
-								console.log(data)
 								openAddCol = false;
 							}
 						};

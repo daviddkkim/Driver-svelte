@@ -22,6 +22,7 @@
 		}
 	];
 
+
 	const sortedData = data.map((row) => {
 		return Object.values(row);
 	});
