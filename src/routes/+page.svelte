@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { DriverLogo } from '../components';
+	import { signOut } from '@auth/sveltekit/client';
 	export let data;
 	export let form;
 
@@ -9,12 +10,13 @@
 	const CardsLayout = `flex flex gap-2 px-4`;
 	const Card = `bg-white border rounded-md p-4 text-stone-700 hover:bg-stone-100`;
 	const NewButton = `border rounded-md p-4 text-stone-700 border-dashed`;
-	const TopNav = `flex w-full px-6 py-6 font-medium text-stone-900 border-b border-stone-200`;
+	const TopNav = `flex w-full px-6 py-6 font-medium text-stone-900 border-b border-stone-200 justify-between`;
 </script>
 
 <div class={Layout}>
 	<div class={TopNav}>
 		<DriverLogo width={24} height={24} />
+		<button on:click={() => signOut()} class="button">Sign out</button>
 	</div>
 
 	<div class={CardsLayout}>

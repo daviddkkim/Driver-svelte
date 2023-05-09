@@ -1,8 +1,8 @@
 import { Client } from "pg";
-import { env } from '$env/dynamic/private';
+import { SUPABASE_CONNECTION } from "$env/static/private";
 
 
-const connectionString = env.SUPABASE_CONNECTION;
+const connectionString = SUPABASE_CONNECTION;
 if (!connectionString) {
     throw new Error("Missing SUPABASE_CONNECTION environment variable");
 }

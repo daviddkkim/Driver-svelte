@@ -1,5 +1,5 @@
 //import { client } from "../$lib/server/db/postgres";
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 
 const database = {
     projects: [
@@ -15,10 +15,11 @@ const database = {
         },
     ]
 }
-export async function load() {
+export async function load(event) {
+    const session = await event.locals.getSession();
+    if (!session?.user) throw redirect(303, "/auth");
 
     return database;
-
 }
 
 export const actions = {
