@@ -16,7 +16,7 @@
 
 <div class="p-3">
 	{#each data.data as row}
-		<TodoItem bind:content={row.content} onInput={submitContentChange}/>
+		<TodoItem bind:row={row} onInput={submitContentChange}/>
 	{/each}
 </div>
 <button
