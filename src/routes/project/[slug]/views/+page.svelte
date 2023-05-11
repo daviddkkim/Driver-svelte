@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { debounce } from '$lib/utils/debounce';
 	import { TodoItem } from '../../../../components';
 	export let data;
 	const submitContentChange = async (row: any) => {
@@ -10,13 +11,15 @@
 			}
 		});
 
-        console.log(response)
+		console.log(response);
 	};
+
+	const debouncedSubmitContentChange = debounce(submitContentChange, 300);
 </script>
 
 <div class="p-3">
 	{#each data.data as row}
-		<TodoItem bind:row={row} onInput={submitContentChange}/>
+		<TodoItem bind:row onInput={debouncedSubmitContentChange} />
 	{/each}
 </div>
 <button
