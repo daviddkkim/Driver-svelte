@@ -2,6 +2,7 @@
 	import { MoreHorizontalIcon, Popover } from '..';
 	export let label: string;
 	export let onDeleteClick: null | ((header: string) => void) = null;
+	export let onEditClick: null | ((header: string) => void) = null;
 	export let compact: boolean = false;
 	let open = false;
 	const HeaderCell = `bg-stone-50 font-medium text-sm px-4 py-1  border-r text-stone-700 hover:bg-stone-100 w-[180px] flex justify-between items-center`;
@@ -21,7 +22,13 @@
 					}}
 					class={'p-1'}>Delete</button
 				>
-				<button class={'p-1'}>Edit</button>
+				<button
+					class={'p-1'}
+					on:click={() => {
+						open = false;
+						onEditClick && onEditClick(label);
+					}}>Edit</button
+				>
 			</div></Popover
 		>
 	{/if}

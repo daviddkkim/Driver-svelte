@@ -7,6 +7,7 @@
 	let colType = 'text';
 	let openAddCol = false;
 	let openDeleteCol = false;
+	let openEditCol = false;
 	let selectedCol = '';
 	let selected: string[] = [];
 
@@ -18,8 +19,12 @@
 
 	$: rowData = data.data;
 
-	const onHeaderClick = (colName: string) => {
+	const onDeleteColClick = (colName: string) => {
 		openDeleteCol = !openDeleteCol;
+		selectedCol = colName;
+	};
+	const onEditColClick = (colName: string) => {
+		openEditCol = !openEditCol;
 		selectedCol = colName;
 	};
 
@@ -62,7 +67,8 @@
 			onAddColClick={() => {
 				openAddCol = !openAddCol;
 			}}
-			{onHeaderClick}
+			{onDeleteColClick}
+			{onEditColClick}
 		>
 			<form slot="addRowForm" method="POST" action="?/addRow" use:enhance>
 				<button class={`p-3`}><PlusIcon height={14} width={14} /></button>
@@ -126,7 +132,6 @@
 								type="text"
 								id="columnDefault"
 								name="column_default"
-								required
 							/>
 						</label>
 					</div>
@@ -188,6 +193,77 @@
 							this action cannot be undone</span
 						>
 						<Button color="danger" type={'submit'}>Delete</Button>
+					</div>
+				</form>
+			</div>
+		</div>
+	{/if}
+	{#if openEditCol}
+		<!-- Turn into re-usable modal. Also this should probably be a popover for better ux -->
+		<div class={'w-full h-full fixed items-center inset-0 bg-stone-900/25'}>
+			<div
+				class={'z-20 absolute bg-white border inset-2/4 -translate-y-2/4 -translate-x-2/4 max-w-[400px] w-full h-fit rounded-md shadow-lg'}
+			>
+				<form
+					method="POST"
+					action="?/editColumn"
+					use:enhance={({ data }) => {
+						//can I do this without data.append? so i dont need javascript?
+						data.append('selectedCol', JSON.stringify(selectedCol));
+						return async ({ result, update }) => {
+							//TODO: I don't actually know the diff between update and applyActions.
+							await update();
+							if (result.type === 'success') {
+								await applyAction(result);
+							}
+						};
+					}}
+				>
+					<div class={`p-3`}>
+						<label class={'flex flex-col text-sm mb-3'} for="columnName">
+							Column name
+							<input
+								class={'border rounded-md p-2 text-sm'}
+								type="text"
+								id="columnName"
+								name="column_name"
+								value={selectedCol}
+							/>
+						</label>
+						<label class={'flex flex-col text-sm mb-3'} for="columnType">
+							Column type
+							<select
+								class={`border rounded-md p-2 appearance-none text-sm`}
+								value={colType}
+								id="columnType"
+								name="column_type"
+								required
+							>
+								{#each columnTypes as type}
+									<option value={type}>{type}</option>
+								{/each}
+							</select>
+						</label>
+						<label class={'flex flex-col text-sm mb-3'} for="columnDefault">
+							Column default
+							<input
+								class={'border rounded-md p-2 text-sm'}
+								type="text"
+								id="columnDefault"
+								name="column_default"
+							/>
+						</label>
+					</div>
+					<div class={'w-full p-3 border-t bg-stone-50 flex justify-end'}>
+						<Button
+							on:click={() => {
+								openEditCol = false;
+							}}
+							style={'mr-auto'}
+						>
+							cancel
+						</Button>
+						<Button color="primary" type={'submit'}>Save</Button>
 					</div>
 				</form>
 			</div>

@@ -8,7 +8,8 @@
 	const TableCell = `bg-white px-4 py-1 text-sm  border-r border-b text-stone-700 hover:bg-stone-100  overflow-hidden w-[180px] whitespace-nowrap `;
 
 	export let onAddColClick = () => {};
-	export let onHeaderClick = (colName: string) => {};
+	export let onDeleteColClick = (colName: string) => {};
+	export let onEditColClick = (colName: string) => {};
 	export let selected:string[] = [];
 	export let data = [
 		{ firstname: 'John', lastname: 'Doe' },
@@ -33,7 +34,7 @@
 		<div class={TableHeader}>
 			<TabelHeaderCell label={''} compact/>
 			{#each column as col}
-				<TabelHeaderCell label={col.header} onDeleteClick={onHeaderClick} />
+				<TabelHeaderCell label={col.header} onDeleteClick={onDeleteColClick} onEditClick={onEditColClick}/>
 			{/each}
 			<button class={`px-3`} on:click={onAddColClick}><PlusIcon height={14} width={14} /></button>
 		</div>

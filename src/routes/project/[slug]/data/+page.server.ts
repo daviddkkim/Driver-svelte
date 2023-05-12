@@ -24,6 +24,9 @@ export const actions = {
         const column_name = data.get('column_name') as string | undefined;
         const column_type = data.get('column_type') as ColumnTypes | undefined;
         const column_default = data.get('column_default') as string | undefined;
+
+        //TO-DO: theres way more types to be parsed out.
+        const parsed_column_type = column_type === 'number' ? "int4" : column_type;
         if (!column_name) {
             return fail(400, { error: 'column name cannot be empty' });
         }
@@ -46,7 +49,7 @@ export const actions = {
         //TODO more strict validations here.
 
         try {
-            const query = `ALTER TABLE driver ADD COLUMN ${column_name} ${column_type} ${column_default ? `DEFAULT ` + column_default : ''}`;
+            const query = `ALTER TABLE driver ADD COLUMN ${column_name} ${parsed_column_type} ${column_default ? `DEFAULT ` + column_default : ''}`;
             console.log(query)
             const { rows: dataRows } = await client.query(query);
             console.log('datarows')
@@ -76,6 +79,32 @@ export const actions = {
         }
         try {
             const { rows: dataRows } = await client.query(`ALTER TABLE driver DROP COLUMN ${column_name}`);
+            return {
+                dataRows
+            }
+        }
+        catch (error) {
+            let message
+            if (error instanceof Error) message = error.message
+            else message = String(error)
+
+            return fail(400, {
+                error: message
+            });
+        }
+    },
+    editColumn: async ({ request }) => {
+        const data = await request.formData();
+        const column_name = data.get('column_name') as string | undefined;
+        const column_type = data.get('column_type') as ColumnTypes | undefined;
+        //const column_default = data.get('column_default') as string | undefined;
+        const old_column_name = data.get('selectedCol') as string | undefined;
+        //TO-DO: theres way more types to be parsed out.
+        const parsed_column_type = column_type === 'number' ? "int4" : column_type;
+        try {
+            const { rows: dataRows } = await client.query(`
+            ALTER TABLE driver ALTER COLUMN ${old_column_name} SET DATA TYPE ${parsed_column_type};
+            `);
             return {
                 dataRows
             }
