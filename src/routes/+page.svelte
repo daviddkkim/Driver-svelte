@@ -44,7 +44,6 @@
 				use:enhance={() => {
 					return async ({ result, update }) => {
 						await update();
-						console.log(result);
 						if (result.type === 'success') {
 							await applyAction(result);
 							openCreateProject = false;

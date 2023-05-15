@@ -7,7 +7,6 @@
 	const TabItem = `flex px-2 py-1 rounded-md text-stone-500 hover:text-stone-600 hover:bg-stone-50 `;
 	const ActiveTabItem = `flex px-2 py-1 rounded-md text-stone-900 `;
 	let activeTabValue = $page.route.id?.substring($page.route.id.lastIndexOf('/') + 1);
-    console.log($page.data.session)
 </script>
 
 <div class={TopNav}>

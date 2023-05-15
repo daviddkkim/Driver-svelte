@@ -19,7 +19,6 @@ export async function load() {
 export const actions = {
     addColumn: async ({ request }) => {
         const data = await request.formData();
-        console.log(data)
         //validation
         const column_name = data.get('column_name') as string | undefined;
         const column_type = data.get('column_type') as ColumnTypes | undefined;
@@ -50,18 +49,13 @@ export const actions = {
 
         try {
             const query = `ALTER TABLE driver ADD COLUMN ${column_name} ${parsed_column_type} ${column_default ? `DEFAULT ` + column_default : ''}`;
-            console.log(query)
             const { rows: dataRows } = await client.query(query);
-            console.log('datarows')
-            console.log(dataRows)
             return {
                 dataRows
             }
         }
         catch (error) {
             let message
-            console.log('error')
-            console.log(message)
             if (error instanceof Error) message = error.message
             else message = String(error)
 
@@ -93,9 +87,10 @@ export const actions = {
             });
         }
     },
+    //TODO: doesn't really work
     editColumn: async ({ request }) => {
         const data = await request.formData();
-        const column_name = data.get('column_name') as string | undefined;
+       // const column_name = data.get('column_name') as string | undefined;
         const column_type = data.get('column_type') as ColumnTypes | undefined;
         //const column_default = data.get('column_default') as string | undefined;
         const old_column_name = data.get('selectedCol') as string | undefined;
@@ -143,11 +138,9 @@ export const actions = {
         if (!rows) {
             return fail(400, { error: 'column name cannot be empty' });
         }
-        console.log('deleteRows')
-        console.log(rows)
+
         try {
             const deleteRowIds = JSON.parse(rows).map((row: string[]) => row[0]).join(',');
-            console.log(deleteRowIds)
             await client.query(`DELETE FROM driver WHERE id IN (${deleteRowIds})`);
 
         } catch (error) {

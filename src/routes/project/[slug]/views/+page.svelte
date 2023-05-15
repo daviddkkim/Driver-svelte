@@ -11,7 +11,6 @@
 			}
 		});
 
-		console.log(response);
 	};
 
 	const debouncedSubmitContentChange = debounce(submitContentChange, 300);
