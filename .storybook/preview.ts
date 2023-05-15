@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/svelte';
+import '../src/app.css'; // replace with the name of your tailwind css file
 
 const preview: Preview = {
 	parameters: {

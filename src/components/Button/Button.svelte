@@ -22,12 +22,12 @@
 	{...buttonProps}
 	class={Size[`${size}`] + ' ' + Color[`${color}`] + ' ' + ButtonPreset + ' ' + style}
 	on:click
-    on:focus
+	on:focus
 	on:mouseover
 	on:mouseenter
 	on:mouseleave
 >
 	<slot name="leadingIcon" class={`mr-1`} />
-	<slot />
+	<slot>Button</slot>
 	<slot name="trailingIcon" class={`ml-1`} />
 </button>
