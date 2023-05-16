@@ -52,7 +52,7 @@
 								<svelte:component
 									this={flexRender(header.column.columnDef.header, header.getContext())}
 								/>
-							{/if}
+							{/if}   
 						</th>
 					{/each}
 				</tr>
@@ -69,21 +69,6 @@
 				</tr>
 			{/each}
 		</tbody>
-		<tfoot>
-			{#each $table.getFooterGroups() as footerGroup}
-				<tr>
-					{#each footerGroup.headers as header}
-						<th colSpan={header.colSpan}>
-							{#if !header.isPlaceholder}
-								<svelte:component
-									this={flexRender(header.column.columnDef.footer, header.getContext())}
-								/>
-							{/if}
-						</th>
-					{/each}
-				</tr>
-			{/each}
-		</tfoot>
 	</table>
 	<div class="h-4" />
 	<button on:click={() => rerender()} class="border p-2"> Rerender </button>
