@@ -11,7 +11,7 @@ export default {
         postCss: true,
       },
     },
-  ],
+  ],  
   plugins: {
     'tailwindcss/nesting': {},
     tailwindcss: {},

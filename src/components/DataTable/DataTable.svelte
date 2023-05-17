@@ -41,13 +41,13 @@
 	const table = createSvelteTable(options);
 </script>
 
-<div class="p-2">
-	<table>
+<div class="overflow-auto">
+	<table >
 		<thead>
 			{#each $table.getHeaderGroups() as headerGroup}
 				<tr>
 					{#each headerGroup.headers as header}
-						<th colSpan={header.colSpan}>
+						<th class="text-sm" colSpan={header.colSpan}>
 							{#if !header.isPlaceholder}
 								<svelte:component
 									this={flexRender(header.column.columnDef.header, header.getContext())}
@@ -62,7 +62,7 @@
 			{#each $table.getRowModel().rows as row}
 				<tr>
 					{#each row.getVisibleCells() as cell}
-						<td>
+						<td class="text-sm" >
 							<svelte:component this={flexRender(cell.column.columnDef.cell, cell.getContext())} />
 						</td>
 					{/each}
@@ -70,6 +70,4 @@
 			{/each}
 		</tbody>
 	</table>
-	<div class="h-4" />
-	<button on:click={() => rerender()} class="border p-2"> Rerender </button>
 </div>

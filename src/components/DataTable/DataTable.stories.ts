@@ -1,8 +1,9 @@
 import type { StoryObj } from '@storybook/svelte';
 
 import DataTable from './DataTable.svelte';
-import type { ColumnDef } from '@tanstack/svelte-table';
-
+import { renderComponent, type ColumnDef } from '@tanstack/svelte-table';
+import TableHeaderCell from '../Table/TableHeaderCell.svelte';
+import TableBodyCell from '../Table/TableBodyCell.svelte';
 // More on how to set up stories at: https://storybook.js.org/docs/svelte/writing-stories/introduction
 const meta = {
     title: 'Example/DataTable',
@@ -54,30 +55,41 @@ const defaultData: Person[] = [
 
 const defaultColumns: ColumnDef<Person>[] = [
     {
-        header: 'First Name',
+        header: (info) => renderComponent(TableHeaderCell, {label: 'First Name', onDeleteClick: () => console.log(info.column.id)}),
+        cell: (info) => renderComponent(TableBodyCell, {label: info.getValue() as string}),
         accessorKey: 'firstName'
     },
     {
-        header: 'Last Name',
-        accessorKey: 'lastName'
+        header: (info) => renderComponent(TableHeaderCell, {label: 'Last Name', onDeleteClick: () => console.log(info.column.id)}),
+        accessorKey: 'lastName',
+        cell: (info) => renderComponent(TableBodyCell, {label: info.getValue() as string}),
+
     },
     {
         accessorKey: 'age',
-        header: () => 'Age',
-        footer: (props) => props.column.id
+        header: (info) => renderComponent(TableHeaderCell, {label: 'Age', onDeleteClick: () => console.log(info.column.id)}),
+        footer: (props) => props.column.id,
+        cell: (info) => renderComponent(TableBodyCell, {label: info.getValue() as string}),
+
     },
     {
 
         accessorKey: 'visits',
-        header: () => 'Visits',
+        header: (info) => renderComponent(TableHeaderCell, {label: 'Visits', onDeleteClick: () => console.log(info.column.id)}),
+        cell: (info) => renderComponent(TableBodyCell, {label: info.getValue() as string}),
+
     },
     {
         accessorKey: 'status',
-        header: 'Status',
+        header: (info) => renderComponent(TableHeaderCell, {label: 'Status', onDeleteClick: () => console.log(info.column.id)}),
+        cell: (info) => renderComponent(TableBodyCell, {label: info.getValue() as string}),
+
     },
     {
         accessorKey: 'progress',
-        header: 'Profile Progress',
+        header: (info) => renderComponent(TableHeaderCell, {label: 'Progress', onDeleteClick: () => console.log(info.column.id)}),
+        cell: (info) => renderComponent(TableBodyCell, {label: info.getValue() as string}),
+
     }
 ];
 
